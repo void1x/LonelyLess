@@ -4,6 +4,7 @@
   <h1>LonelyLess</h1>
   <p><strong>A premium mental health & loneliness risk checker.</strong></p>
   <p><em>Built with React 18, Vite, and the modern View Transitions API.</em></p>
+  <p>🚀 <strong><a href="https://lonely-less-theta.vercel.app/">Try it live here</a></strong></p>
   <br />
 </div>
 
@@ -80,9 +81,9 @@ All check-ins are recorded directly in your browser using `localStorage`. You ca
 <br />
 ## 👥 Contributors
 
-- **Cham Myae Min Thu** - Github: [cham17R](https://github.com/cham17R) *(UI/UX designed)*
-- **Rushi Rajviya** - Github: [rushii15x](https://github.com/rushii15x) *(Hosted on Vercel and deployment, debugging and bug analysis)*
-- **Shashi Singh** - Github: [void1x](https://github.com/void1x) *(Designed backend and frontend, fixed bug about this in detail)*
+- **[Cham Myae Min Thu](https://github.com/cham17R)** - UI/UX Design
+- **[Shashi Singh](https://github.com/void1x)** - Fullstack Dev & Bug Fixes
+- **[Rushi Rajviya](https://github.com/rushii15x)** - Vercel Deployment & QA
 
 ---
 <div align="center">
