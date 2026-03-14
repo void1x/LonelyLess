@@ -83,6 +83,59 @@ A zero-dependency **Matugen-style theme engine** is baked into the architecture.
 
 ---
 
+## 📈 How It Works — Workflow
+
+### Application Flow
+
+```mermaid
+graph LR
+    A["🏠 Landing Page"] -->|"Check my score →"| B["📋 Check-In Tab"]
+    B -->|"Set 4 sliders"| C["⚙️ Scoring Engine"]
+    C -->|"Weighted calculation"| D["📊 Results Panel"]
+    D --> E["💡 Suggestions"]
+    D --> F["📜 History"]
+    F -->|"localStorage"| G["📈 Trend Chart"]
+```
+
+### Scoring Pipeline
+
+```mermaid
+graph TD
+    subgraph Inputs
+        I1["📱 Screen Time hrs/day"]
+        I2["🤝 Social Interactions count"]
+        I3["🌙 Sleep hrs/night"]
+        I4["🏃 Exercise hrs/week"]
+    end
+
+    subgraph Threshold Matching
+        I1 --> T1["datasets.json thresholds"]
+        I2 --> T2["datasets.json thresholds"]
+        I3 --> T3["datasets.json thresholds"]
+        I4 --> T4["datasets.json thresholds"]
+    end
+
+    subgraph Weighted Score
+        T1 -->|"× 25%"| W["Sum weighted scores"]
+        T2 -->|"× 30%"| W
+        T3 -->|"× 25%"| W
+        T4 -->|"× 20%"| W
+    end
+
+    W --> R{"Risk Level"}
+    R -->|"0 – 39"| LOW["🟢 Low"]
+    R -->|"40 – 69"| MOD["🟡 Moderate"]
+    R -->|"70 – 100"| HIGH["🔴 High"]
+
+    W --> S["rules.js → Personalized Suggestions"]
+```
+
+### Suggestion Engine
+
+The suggestion engine (`rules.js`) fires **threshold-based rules** per factor. When a factor score exceeds its trigger threshold, relevant actions are surfaced, sorted by urgency priority, and capped at the top 4 most impactful recommendations.
+
+---
+
 ## 🏗️ Project Architecture
 
 ```
