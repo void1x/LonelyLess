@@ -78,6 +78,11 @@ Visit the provided localhost port (usually `http://localhost:5173`).
 All check-ins are recorded directly in your browser using `localStorage`. You can securely view your historical progression at the top of the checker interface. **LonelyLess never tracks or transmits your personal data.**
 
 <br />
+## 👥 Contributors
+
+- **Cham Myae Min Thu** - Github: [cham17R](https://github.com/cham17R) *(UI/UX designed)*
+- **Rushi Rajviya** - Github: [rushii15x](https://github.com/rushii15x) *(Hosted on Vercel and deployment, debugging and bug analysis)*
+- **Shashi Singh** - Github: [void1x](https://github.com/void1x) *(Designed backend and frontend, fixed bug about this in detail)*
 
 ---
 <div align="center">
