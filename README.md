@@ -81,7 +81,7 @@ A zero-dependency **Matugen-style theme engine** is baked into the architecture.
 
 > The ripple animation expands as a circular clip-path from your exact cursor position, creating a "drop in the ocean" effect.
 
----
+-----
 
 ## 📈 How It Works — Workflow
 
