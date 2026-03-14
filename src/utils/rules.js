@@ -1,4 +1,4 @@
-const RULES = [
+export const RULES = [
   // ONLINE Rules
   {
     id: "online-moderate",
@@ -115,7 +115,7 @@ const RULES = [
  * @param {number} maxCount - Max number of recommendations to return
  * @returns {Array} Array of recommended action objects
  */
-function getSuggestions(factors, maxCount = 4) {
+export function getSuggestions(factors, maxCount = 4) {
   if (!factors) return [];
 
   // Filter rules where the relevant factor score meets or exceeds the trigger threshold
@@ -142,6 +142,3 @@ function getSuggestions(factors, maxCount = 4) {
   // Return the top maxCount rules
   return matchedRules.slice(0, maxCount);
 }
-
-// Attach to window
-window.RulesEngine = { getSuggestions };

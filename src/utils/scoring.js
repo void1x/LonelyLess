@@ -1,32 +1,5 @@
-let THRESHOLDS = null;
+import THRESHOLDS from '../data/datasets.json';
 
-// Fetch the thresholds from datasets.json on load.
-// Note: Path is relative to the HTML page loading it (index.html), so 'data/datasets.json'.
-fetch('data/datasets.json')
-  .then(response => {
-    if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    THRESHOLDS = data;
-    console.log("ScoringEngine: thresholds loaded");
-  })
-  .catch(error => {
-    console.error("Error loading data/datasets.json:", error);
-  });
-
-/**
- * Generic function to get score for a given factor.
- * 
- * Special note on 'sleep':
- * Sleep is a bidirectional risk where both too little (e.g., 4 hrs) and too much 
- * (e.g., 11+ hrs) are harmful, while 7-9 is optimal. Because our thesholds are 
- * strictly ordered arrays in datasets.json and we evaluate using 
- * `value <= threshold.max`, this bidirectional risk handles itself without any 
- * special-casing here. The exact ranges and scores defined in JSON dictate the logic.
- */
 function getScore(value, key) {
   if (!THRESHOLDS || !THRESHOLDS[key]) {
       return { score: 0, label: "Unknown", note: "Thresholds not loaded", weight: 0 };
@@ -46,7 +19,7 @@ function getScore(value, key) {
 /**
  * Main calculateRisk function that accepts an object of numeric inputs.
  */
-function calculateRisk(inputs) {
+export function calculateRisk(inputs) {
   if (!THRESHOLDS) {
     console.warn("Thresholds not loaded yet. Unable to calculate risk.");
     return null;
@@ -88,6 +61,3 @@ function calculateRisk(inputs) {
     factors
   };
 }
-
-// Attach to window
-window.ScoringEngine = { calculateRisk };

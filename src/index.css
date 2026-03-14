@@ -1,3 +1,5 @@
+/* Base tailwind configured via CDN in index.html */
+
 /* Custom Range Sliders */
 input[type=range] {
   -webkit-appearance: none;
@@ -56,6 +58,15 @@ input[type=range]:focus::-moz-range-thumb {
 @keyframes fadeIn {
   0% { opacity: 0; transform: translateY(8px); }
   100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Hide scrollbar for cleaner lists */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 /* Score Ring */
