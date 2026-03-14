@@ -1,0 +1,11 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="85" cy="95" r="55" fill="#58C4EA" opacity="0.85" />
+  <circle cx="105" cy="160" r="65" fill="url(#botGrad)" opacity="0.85" />
+  <circle cx="160" cy="120" r="75" fill="#FA6D46" opacity="0.85" />
+  <defs>
+    <linearGradient id="botGrad" x1="40" y1="225" x2="170" y2="95" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E83984" />
+      <stop offset="100%" stop-color="#F6A338" />
+    </linearGradient>
+  </defs>
+</svg>

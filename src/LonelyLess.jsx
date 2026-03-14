@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useTheme, THEME_KEYS } from './ThemeProvider';
+import { useTheme } from './ThemeProvider';
+import ThemeSlider from './ThemeSlider';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // STYLES CONSTANT
@@ -377,7 +378,7 @@ function LonelyLess() {
           fontSize: 14, fontWeight: 500, color: 'var(--cream)', letterSpacing: '.02em',
           cursor: 'pointer'
         }} onClick={() => window.location.href = '/'}>
-          <div style={{ width: 8, height: 8, borderRadius: '50%', background: 'var(--sage)' }} />
+          <img src="/logo.svg" alt="Logo" style={{ width: 18, height: 18 }} />
           LonelyLess
         </div>
 

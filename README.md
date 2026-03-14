@@ -1,6 +1,6 @@
 <div align="center">
   <br />
-  <img src="https://raw.githubusercontent.com/antigravity/wellbeing-checker/main/public/logo.png" alt="LonelyLess" width="60" />
+  <img src="public/logo.svg" alt="LonelyLess" width="60" />
   <h1>LonelyLess</h1>
   <p><strong>A premium mental health & loneliness risk checker.</strong></p>
   <p><em>Built with React 18, Vite, and the modern View Transitions API.</em></p>
