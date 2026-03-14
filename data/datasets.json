@@ -1,0 +1,182 @@
+{
+  "online": {
+    "source": "WHO Digital Wellbeing Guidelines 2023",
+    "weight": 0.25,
+    "thresholds": [
+      {
+        "max": 3,
+        "score": 5,
+        "label": "Healthy",
+        "note": "A healthy amount of screen time that leaves plenty of room for offline activities."
+      },
+      {
+        "max": 5,
+        "score": 20,
+        "label": "Moderate",
+        "note": "Moderate screen time that is manageable but could be reduced."
+      },
+      {
+        "max": 7,
+        "score": 45,
+        "label": "Elevated",
+        "note": "Elevated screen time that may begin to impact sleep and focus."
+      },
+      {
+        "max": 10,
+        "score": 65,
+        "label": "Elevated",
+        "note": "High screen time with potential negative impacts on mental wellbeing."
+      },
+      {
+        "max": 13,
+        "score": 80,
+        "label": "High risk",
+        "note": "Very high screen time strongly associated with digital fatigue."
+      },
+      {
+        "max": 99,
+        "score": 95,
+        "label": "High risk",
+        "note": "Extreme screen time posing severe risks to physical and mental health."
+      }
+    ]
+  },
+  "social": {
+    "source": "UCLA Loneliness Scale 2020",
+    "weight": 0.3,
+    "thresholds": [
+      {
+        "max": 0,
+        "score": 98,
+        "label": "High risk",
+        "note": "Complete lack of social interaction is a severe risk factor for deep loneliness."
+      },
+      {
+        "max": 1,
+        "score": 85,
+        "label": "High risk",
+        "note": "Extremely isolated lifestyle with very limited support network."
+      },
+      {
+        "max": 3,
+        "score": 70,
+        "label": "Elevated",
+        "note": "Low level of social interaction that may lead to feelings of isolation."
+      },
+      {
+        "max": 6,
+        "score": 50,
+        "label": "Moderate",
+        "note": "Moderate socialization that provides some connection but could be improved."
+      },
+      {
+        "max": 9,
+        "score": 30,
+        "label": "Moderate",
+        "note": "Reasonable level of social interaction supporting general wellbeing."
+      },
+      {
+        "max": 13,
+        "score": 15,
+        "label": "Healthy",
+        "note": "Good social engagement offering a strong protective buffer against stress."
+      },
+      {
+        "max": 99,
+        "score": 5,
+        "label": "Healthy",
+        "note": "Excellent social integration and strong community ties."
+      }
+    ]
+  },
+  "sleep": {
+    "source": "NIH Sleep Deprivation Research",
+    "weight": 0.25,
+    "thresholds": [
+      {
+        "max": 3,
+        "score": 92,
+        "label": "High risk",
+        "note": "Dangerous sleep deprivation drastically impairing cognitive and physical functions."
+      },
+      {
+        "max": 4,
+        "score": 80,
+        "label": "High risk",
+        "note": "Severe lack of sleep with serious negative effects on daily mood and health."
+      },
+      {
+        "max": 5,
+        "score": 60,
+        "label": "Elevated",
+        "note": "Significant sleep deficit leading to fatigue and reduced resilience."
+      },
+      {
+        "max": 6,
+        "score": 30,
+        "label": "Moderate",
+        "note": "Slight sleep deprivation that may cause minor lethargy."
+      },
+      {
+        "max": 9,
+        "score": 5,
+        "label": "Healthy",
+        "note": "Optimal sleep duration for full mental and physical recovery."
+      },
+      {
+        "max": 10,
+        "score": 30,
+        "label": "Moderate",
+        "note": "Slight oversleeping that can sometimes disrupt normal circadian rhythms."
+      },
+      {
+        "max": 11,
+        "score": 60,
+        "label": "Elevated",
+        "note": "Excessive sleep indicating potential underlying health or mood issues."
+      },
+      {
+        "max": 99,
+        "score": 92,
+        "label": "High risk",
+        "note": "Extreme oversleeping strongly correlated with depression or physical illness."
+      }
+    ]
+  },
+  "activity": {
+    "source": "WHO Physical Activity Guidelines 2022",
+    "weight": 0.2,
+    "thresholds": [
+      {
+        "max": 0,
+        "score": 88,
+        "label": "High risk",
+        "note": "Completely sedentary lifestyle with major risks for long-term health."
+      },
+      {
+        "max": 1,
+        "score": 65,
+        "label": "Elevated",
+        "note": "Very low physical activity insufficient for maintaining cardiovascular health."
+      },
+      {
+        "max": 2,
+        "score": 45,
+        "label": "Moderate",
+        "note": "Some activity present but below recommended levels for optimal health."
+      },
+      {
+        "max": 4,
+        "score": 20,
+        "label": "Healthy",
+        "note": "Good routine of regular exercise supporting physical and mental health."
+      },
+      {
+        "max": 99,
+        "score": 5,
+        "label": "Healthy",
+        "note": "Excellent level of physical activity providing maximum health benefits."
+      }
+    ]
+  }
+}
