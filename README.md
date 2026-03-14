@@ -1,183 +1,163 @@
-# 🧠 Wellbeing Checker
+# 🧠 LonelyLess
 
-A lightweight, client-side web app that helps you quantify and track the risk factors of your digital, social, and physical lifestyle. No backend, no accounts — just open it in a browser and go.
+[![Vanilla JS](https://img.shields.io/badge/JavaScript-Vanilla-yellow.svg)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg)](https://tailwindcss.com/)
+[![Chart.js](https://img.shields.io/badge/Chart.js-4.4.0-FF6384.svg)](https://www.chartjs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
----
+> **LonelyLess** is a lightweight, client-side web application designed to help users quantify, track, and improve their digital, social, and physical wellbeing. 
 
-## ✨ Features
+By evaluating four key lifestyle factors (screen time, social interaction, sleep, and physical activity) against globally recognized health standards (WHO, NIH, UCLA), LonelyLess provides personalized risk assessments and actionable recommendations to combat loneliness and improve overall mental health. 
 
-- **4-factor risk assessment** — Screen time, social interactions, sleep duration, and physical activity
-- **Weighted risk scoring** — Evidence-based scoring engine using WHO, NIH, and UCLA research
-- **Personalized recommendations** — A rules engine surfaces the most urgent, actionable suggestions
-- **Interactive charts** — Score ring (doughnut), radar chart, and history trend line
-- **Persistent history** — Up to 30 check-ins stored locally in `localStorage`, newest first
-- **Zero dependencies install** — Pure vanilla JS + HTML + CSS, CDN-loaded Chart.js and Tailwind
+No backend, no accounts, zero tracking — your data stays in your browser.
 
 ---
 
-## 📁 Project Structure
+## 📑 Table of Contents
 
+- [✨ Core Features](#-core-features)
+- [🏗️ Architecture & Data Flow](#-architecture--data-flow)
+- [📂 Codebase Structure](#-codebase-structure)
+- [🧩 Module Deep Dive](#-module-deep-dive)
+  - [ScoringEngine](#1-scoringengine-jsscoringjs)
+  - [RulesEngine](#2-rulesengine-jsrulesjs)
+  - [HistoryEngine](#3-historyengine-jshistoryjs)
+  - [ChartEngine](#4-chartengine-jschartsjs)
+- [🚀 Getting Started](#-getting-started)
+- [🔧 Customization](#-customization)
+- [🛠️ Tech Stack](#-tech-stack)
+- [📝 License](#-license)
+
+---
+
+## ✨ Core Features
+
+- **4-Factor Risk Assessment:** Evaluates daily habits across Screen Time, Social Events, Sleep Duration, and Physical Activity.
+- **Evidence-Based Scoring:** Utilizes dynamic thresholds weighted against clinical guidelines (WHO, NIH).
+- **Intelligent Recommendations:** A built-in Rule Engine triggers targeted lifestyle interventions based on specific risk factors.
+- **Rich Visualizations:** Interactive doughnut (score ring), radar, and timeline charts powered by Chart.js.
+- **Local Persistence:** Securely stores up to 30 historical check-ins using HTML5 `localStorage`.
+- **Zero-Dependency Architecture:** Pure Vanilla JavaScript, HTML, and CSS. (Tailwind and Chart.js are loaded via CDN).
+
+---
+
+## 🏗️ Architecture & Data Flow
+
+LonelyLess relies on a strictly unidirectional, globally-namespaced engine architecture. 
+
+```mermaid
+graph TD;
+    UI[User Input Sliders] -->|Triggers Calculate| SE(ScoringEngine);
+    subJSON[(datasets.json)] -->|Loads Thresholds| SE;
+    SE -->|Calculates Risk Score| RE(RulesEngine);
+    RE -->|Generates Suggestions| CE(ChartEngine);
+    SE -->|Passes Results| CE;
+    SE -->|Passes Results| HE(HistoryEngine);
+    HE <-->|Read / Write| LS[(localStorage)];
+    CE --> DOM[DOM / UI Update];
 ```
-wellbeing-checker/
-├── index.html          # Single-page app shell, all UI markup and orchestration logic
+
+---
+
+## 📂 Codebase Structure
+
+```text
+lonelyless/
+├── index.html          # Core view, UI orchestration, and DOM event bindings
 ├── css/
-│   └── style.css       # Custom range slider styles, animations, color utilities
+│   └── style.css       # Custom animations, slider overrides, and color utilities
 ├── js/
-│   ├── scoring.js      # ScoringEngine — loads thresholds, computes weighted risk score
-│   ├── rules.js        # RulesEngine — matches factor scores to actionable recommendations
-│   ├── history.js      # HistoryEngine — localStorage CRUD and chart data preparation
-│   └── charts.js       # ChartEngine — creates and updates all Chart.js chart instances
+│   ├── scoring.js      # Core business logic: calculates weighted risk scores
+│   ├── rules.js        # Recommendation logic: maps scores to actionable advice
+│   ├── history.js      # Persistence layer: manages localStorage CRUD operations
+│   └── charts.js       # Visualization layer: Chart.js wrappers and renderers
 └── data/
-    └── datasets.json   # Threshold definitions and weights for each factor (source-cited)
+    └── datasets.json   # Configuration: Scoring thresholds, weights, and labels
 ```
 
 ---
 
-## 🏗️ Architecture
+## 🧩 Module Deep Dive
 
-The app is built as a pipeline of globally-namespaced engine modules, each attached to `window`:
+### 1. `ScoringEngine` (`js/scoring.js`)
+Responsible for quantifying raw input into actionable metrics. 
+- Loads `datasets.json` asynchronously on startup.
+- Normalizes individual factor inputs against predefined threshold arrays (`min/max`).
+- Calculates the weighted **Total Risk Score (0-100)** and determines the overall risk bracket (Low/Moderate/High).
+- **Note on Sleep:** Sleep logic is uniquely bidirectional. The engine naturally handles penalties for both sleep deprivation (< 7 hrs) and oversleeping (> 9 hrs) strictly through ordered dataset arrays.
 
-```
-[User Sliders] → ScoringEngine → RulesEngine → ChartEngine
-                      ↓
-                 HistoryEngine (localStorage)
-```
+### 2. `RulesEngine` (`js/rules.js`)
+An intelligent evaluation matrix that provides personalized feedback.
+- Contains a declarative array of `RULES`.
+- Evaluates the output from the `ScoringEngine`. 
+- Returns an array of contextual, actionable suggestions sorted by urgency (`priority`). If a user has a highly sedentary lifestyle, the most urgent physical activity recommendations surface first.
 
-### `ScoringEngine` (`js/scoring.js`)
+### 3. `HistoryEngine` (`js/history.js`)
+The storage controller ensuring data privacy.
+- Interacts strictly with `localStorage`.
+- Enforces a rolling FIFO (First-In-First-Out) buffer capped at **30 entries**.
+- Prepares and formats chronological arrays (`getHistoryChartData`) to be consumed by the Line Chart in the history tab.
 
-Fetches `data/datasets.json` asynchronously on page load and exposes one function:
-
-```js
-window.ScoringEngine.calculateRisk({ online, social, sleep, activity })
-// Returns: { total: Number, level: "Low"|"Moderate"|"High", color: HexString, factors: Object }
-```
-
-Each factor is scored 0–100 against threshold brackets, then combined using its configured weight:
-
-| Factor   | Weight | Source |
-|----------|--------|--------|
-| Online   | 0.25   | WHO Digital Wellbeing Guidelines 2023 |
-| Social   | 0.30   | UCLA Loneliness Scale 2020 |
-| Sleep    | 0.25   | NIH Sleep Deprivation Research |
-| Activity | 0.20   | WHO Physical Activity Guidelines 2022 |
-
-**Risk levels:**
-| Total Score | Level    | Color   |
-|-------------|----------|---------|
-| 0 – 39      | Low      | 🟢 Green  |
-| 40 – 69     | Moderate | 🟡 Amber  |
-| 70 – 100    | High     | 🔴 Red    |
-
-> **Note on sleep:** Sleep is bidirectional — both too little *and* too much are penalized. This is handled naturally by the ordered threshold array in `datasets.json` without any special-casing in code.
-
----
-
-### `RulesEngine` (`js/rules.js`)
-
-A declarative rule set where each rule specifies which factor triggers it, the minimum score needed, and an action + reason pair:
-
-```js
-window.RulesEngine.getSuggestions(factors, maxCount = 4)
-// Returns: Array of { icon, action, reason } objects, sorted by urgency (priority 0 = highest)
-```
-
-If no rules fire (all factors are healthy), a single "keep it up" message is returned instead.
-
----
-
-### `HistoryEngine` (`js/history.js`)
-
-Manages a `wellbeing_history` key in `localStorage` with a cap of **30 entries**:
-
-```js
-window.HistoryEngine.saveCheckIn(inputs, result)  // Save a new check-in
-window.HistoryEngine.getHistory()                  // Returns Array, newest first
-window.HistoryEngine.getHistoryChartData()         // Returns { labels, scores, colors } for last 10
-window.HistoryEngine.clearHistory()                // Wipes all stored entries
-```
-
----
-
-### `ChartEngine` (`js/charts.js`)
-
-Wraps Chart.js with three chart types:
-
-| Chart | Type | Description |
-|-------|------|-------------|
-| Score Ring | Doughnut | Displays the total risk score (0–100) with a custom center-text plugin |
-| Radar Chart | Radar | Shows the 4-factor breakdown; color adapts to the dominant risk level |
-| History Chart | Line | Plots the last 10 check-in scores left-to-right chronologically |
-
-Charts are created on first run and updated on subsequent runs (destroy-and-recreate for history).
-
----
-
-### `data/datasets.json`
-
-The single source of truth for all scoring thresholds. Each factor has:
-
-```json
-{
-  "online": {
-    "source": "WHO Digital Wellbeing Guidelines 2023",
-    "weight": 0.25,
-    "thresholds": [
-      { "max": 3,  "score": 5,  "label": "Healthy",   "note": "..." },
-      { "max": 5,  "score": 20, "label": "Moderate",  "note": "..." },
-      ...
-    ]
-  }
-}
-```
-
-Updating thresholds or weights here automatically updates the entire scoring pipeline — no JS changes needed.
+### 4. `ChartEngine` (`js/charts.js`)
+A decoupled visualization wrapper for `Chart.js`.
+- Custom plugin: `centerTextPlugin` injects dynamic text into the Doughnut chart.
+- Dynamic Radar context: Radar chart dynamically updates its border and fill colors based on the single highest-risk factor to naturally draw the user's eye to problem areas.
+- Lifecycle management: safely destroys and re-initializes canvas contexts to prevent memory leaks during history updates.
 
 ---
 
 ## 🚀 Getting Started
 
-No build step required. Because `scoring.js` fetches `datasets.json` via `fetch()`, the app **must be served over HTTP** (not opened directly as a `file://` URL).
+LonelyLess requires no build pipeline, Node.js, or package manager. However, because it fetches `datasets.json` via the native `fetch()` API, it **must be served over a local HTTP server** (to bypass CORS `file://` restrictions).
 
-**Quickest way — Python:**
+**Option A: Using Python (Mac/Linux/Windows)**
 ```bash
-cd wellbeing-checker
+cd lonelyless
 python -m http.server 8080
-# Open http://localhost:8080
+# Open http://localhost:8080 in your browser
 ```
 
-**Or with Node.js (`npx serve`):**
+**Option B: Using Node.js**
 ```bash
-npx serve wellbeing-checker
+npx serve .
+# Open http://localhost:3000 in your browser
 ```
 
-**Or with VS Code:** Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension and click **Go Live**.
+**Option C: VS Code**
+1. Install the [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) extension.
+2. Open `index.html`.
+3. Click "Go Live" in the bottom right corner of VS Code.
 
 ---
 
 ## 🔧 Customization
 
-| What to change | Where |
+LonelyLess is designed to be highly modular. You can alter the app's behavior entirely without touching the JavaScript logic.
+
+| To Change... | Edit This File |
 |---|---|
-| Scoring thresholds / weights | `data/datasets.json` |
-| Recommendation rules & text | `js/rules.js` — `RULES` array |
-| Risk level color palette | `js/scoring.js` — `calculateRisk()` |
-| UI layout & styling | `index.html` (Tailwind classes) + `css/style.css` |
-| Chart appearance | `js/charts.js` |
-| Max history entries | `js/history.js` — `MAX_ENTRIES` constant |
+| **Scoring logic, weights, clinical thresholds** | `data/datasets.json` |
+| **Recommendation text, priorities, icons** | `js/rules.js` (The `RULES` array) |
+| **Risk level color palettes (Green/Amber/Red)** | `js/scoring.js` (in `calculateRisk`) |
+| **Maximum number of saved history entries** | `js/history.js` (`MAX_ENTRIES` constant) |
+| **Layout, typography, structural styling** | `index.html` (via Tailwind utility classes) |
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Technology | Version | Usage |
-|---|---|---|
-| HTML5 / Vanilla JS | — | App shell and all logic |
-| [Tailwind CSS](https://tailwindcss.com/) | CDN (Play) | Utility-class styling |
-| [Chart.js](https://www.chartjs.org/) | 4.4.0 | All data visualizations |
-| `localStorage` | Browser API | Persistent history storage |
+- **Markup:** HTML5
+- **Styling:** [Tailwind CSS v3](https://tailwindcss.com/) (loaded via CDN for layout) + Vanilla CSS (`style.css` for custom range sliders/animations)
+- **Logic:** Vanilla JavaScript (ES6)
+- **Data Visualization:** [Chart.js 4.4.0](https://www.chartjs.org/) (loaded via CDN)
+- **Data Persistence:** Browser `localStorage` API
+- **Data Format:** JSON Configuration
 
 ---
 
 ## 📝 License
 
-MIT — do whatever you want with it.
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+*Built to make the digital world a little less lonely.*
